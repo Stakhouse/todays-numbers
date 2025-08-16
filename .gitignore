@@ -36,3 +36,8 @@ firestore-debug.log
 
 # OS generated files
 Thumbs.db
+
+# GitHub access tokens - NEVER commit these!
+GithubAccessKey.md.txt
+*.token
+*.key
