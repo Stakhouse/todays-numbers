@@ -1,5 +1,7 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Grid } from '@mui/material';
+import { Card, CardContent, Typography, Box, Grid, Button } from '@mui/material';
+import { Casino, ArrowForward } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 interface LotteryCardProps {
   islandId: string;
@@ -30,13 +32,28 @@ const mockLotteryData: { [key: string]: any } = {
 
 const LotteryCard: React.FC<LotteryCardProps> = ({ islandId }) => {
   const data = mockLotteryData[islandId] || {};
+  const navigate = useNavigate();
 
   return (
-    <Card sx={{ backgroundColor: '#FFF8E1' }}>
+    <Card 
+      sx={{ 
+        backgroundColor: '#FFF8E1',
+        cursor: 'pointer',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+        },
+      }}
+      onClick={() => navigate(`/lottery/${islandId}`)}
+    >
       <CardContent>
-        <Typography variant="h6" color="primary" gutterBottom>
-          Lottery Numbers
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+          <Casino sx={{ color: 'primary.main' }} />
+          <Typography variant="h6" color="primary">
+            Lottery Numbers
+          </Typography>
+        </Box>
         {Object.keys(data).map((game) => (
           <Box key={game} sx={{ mb: 2 }}>
             <Typography variant="subtitle1" component="div">
@@ -64,6 +81,19 @@ const LotteryCard: React.FC<LotteryCardProps> = ({ islandId }) => {
             </Grid>
           </Box>
         ))}
+        
+        <Button
+          variant="outlined"
+          endIcon={<ArrowForward />}
+          size="small"
+          sx={{ mt: 2 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/lottery/${islandId}`);
+          }}
+        >
+          View Details
+        </Button>
       </CardContent>
     </Card>
   );

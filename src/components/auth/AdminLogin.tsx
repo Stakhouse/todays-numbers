@@ -15,6 +15,9 @@ import {
 import { Google as GoogleIcon, AdminPanelSettings } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 
+// Check if we're in development mode
+const isDevelopmentMode = import.meta.env.VITE_FIREBASE_API_KEY === 'example_api_key_here';
+
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -98,6 +101,21 @@ const AdminLogin: React.FC = () => {
                 🏝️ Today's Numbers Administration
               </Typography>
             </Box>
+
+            {/* Development Mode Notice */}
+            {isDevelopmentMode && (
+              <Alert severity="info" sx={{ mb: 3 }}>
+                <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>
+                  🚧 Development Mode Active
+                </Typography>
+                <Typography variant="body2">
+                  Use these test credentials:
+                  <br />• Email: <strong>admin@todaysnumbers.com</strong>
+                  <br />• Password: <strong>admin</strong>
+                  <br />Or click "Continue with Google" for instant access.
+                </Typography>
+              </Alert>
+            )}
 
             {/* Error Alert */}
             {error && (

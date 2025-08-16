@@ -12,6 +12,9 @@ import {
   Menu as MenuIcon,
   ExitToApp,
   NavigateNext,
+  Home,
+  Info,
+  ContactMail,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -29,7 +32,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ onMenuClick, showMenuButton }
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/admin/login');
+      navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -81,8 +84,8 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ onMenuClick, showMenuButton }
         width: '100%',
       }}
     >
-      {/* Left Side - Menu Button + Breadcrumbs */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      {/* Left Side - Menu Button + Logo + Navigation */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
         {showMenuButton && (
           <IconButton
             color="inherit"
@@ -94,7 +97,75 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ onMenuClick, showMenuButton }
           </IconButton>
         )}
 
-        <Box>
+        {/* Today's Numbers Logo - Clickable */}
+        <Typography
+          variant="h6"
+          component="h1"
+          sx={{
+            fontWeight: 700,
+            color: 'white',
+            cursor: 'pointer',
+            '&:hover': {
+              opacity: 0.8,
+            },
+            display: { xs: 'none', md: 'block' },
+          }}
+          onClick={() => navigate('/')}
+        >
+          Today's Numbers
+        </Typography>
+
+        {/* Main Site Navigation */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Button
+            startIcon={<Home sx={{ fontSize: 18 }} />}
+            onClick={() => navigate('/')}
+            sx={{
+              color: 'white',
+              textTransform: 'none',
+              fontSize: '0.875rem',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              },
+              display: { xs: 'none', lg: 'flex' },
+            }}
+          >
+            Home
+          </Button>
+          <Button
+            startIcon={<Info sx={{ fontSize: 18 }} />}
+            onClick={() => navigate('/about')}
+            sx={{
+              color: 'white',
+              textTransform: 'none',
+              fontSize: '0.875rem',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              },
+              display: { xs: 'none', lg: 'flex' },
+            }}
+          >
+            About
+          </Button>
+          <Button
+            startIcon={<ContactMail sx={{ fontSize: 18 }} />}
+            onClick={() => navigate('/contact')}
+            sx={{
+              color: 'white',
+              textTransform: 'none',
+              fontSize: '0.875rem',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              },
+              display: { xs: 'none', lg: 'flex' },
+            }}
+          >
+            Contact
+          </Button>
+        </Box>
+
+        {/* Admin Breadcrumbs */}
+        <Box sx={{ ml: 2 }}>
           <Breadcrumbs
             separator={<NavigateNext fontSize="small" />}
             sx={{

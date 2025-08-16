@@ -4,7 +4,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Box } from '@mui/material';
 import Dashboard from './components/Dashboard';
 import Header from './components/Header';
+import About from './components/pages/About';
+import Contact from './components/pages/Contact';
+import LotteryDetails from './components/pages/LotteryDetails';
 import AdminLogin from './components/auth/AdminLogin';
+import UnifiedLogin from './components/auth/UnifiedLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminLayout from './components/admin/AdminLayout';
 import AdManagement from './components/admin/pages/AdManagement';
@@ -94,20 +98,69 @@ function App() {
                   <Dashboard />
                 </Box>
               } />
+              <Route path="/about" element={
+                <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+                  <Header />
+                  <About />
+                </Box>
+              } />
+              <Route path="/contact" element={
+                <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+                  <Header />
+                  <Contact />
+                </Box>
+              } />
+              <Route path="/lottery/:islandId" element={
+                <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+                  <Header />
+                  <LotteryDetails />
+                </Box>
+              } />
+              
+              {/* Login routes */}
+              <Route path="/login" element={<UnifiedLogin />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
               
               {/* Admin routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/*" element={
+              <Route path="/admin" element={
                 <ProtectedRoute>
                   <AdminLayout>
-                    <Routes>
-                      <Route index element={<AdminDashboard />} />
-                      <Route path="ads" element={<AdManagement />} />
-                      <Route path="users" element={<UserManagement />} />
-                      <Route path="islands" element={<IslandDataManagement />} />
-                      <Route path="reports" element={<Reports />} />
-                      <Route path="analytics" element={<Analytics />} />
-                    </Routes>
+                    <AdminDashboard />
+                  </AdminLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/ads" element={
+                <ProtectedRoute>
+                  <AdminLayout>
+                    <AdManagement />
+                  </AdminLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/users" element={
+                <ProtectedRoute>
+                  <AdminLayout>
+                    <UserManagement />
+                  </AdminLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/islands" element={
+                <ProtectedRoute>
+                  <AdminLayout>
+                    <IslandDataManagement />
+                  </AdminLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/reports" element={
+                <ProtectedRoute>
+                  <AdminLayout>
+                    <Reports />
+                  </AdminLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/analytics" element={
+                <ProtectedRoute>
+                  <AdminLayout>
+                    <Analytics />
                   </AdminLayout>
                 </ProtectedRoute>
               } />
