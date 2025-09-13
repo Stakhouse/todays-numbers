@@ -8,18 +8,28 @@
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "quality-check": "node scripts/quality-check.js",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "firebase:setup": "node scripts/firebase-setup.js",
+    "firebase:deploy": "node scripts/firebase-deploy.js",
+    "firebase:rules": "firebase deploy --only firestore:rules",
+    "firebase:test-auth": "node scripts/test-firebase-auth.js",
+    "install:deps": "node scripts/install-dependencies.js",
+    "test:admin-routes": "node scripts/test-admin-routes.js",
+    "test:ad-management": "node scripts/test-ad-management.js",
+    "test:lottery-api": "node scripts/test-lottery-api-node.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.20",
-    "axios": "^1.6.2",
+    "axios": "^1.11.0",
+    "date-fns": "^4.1.0",
     "firebase": "^12.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1",
+    "socket.io-client": "^4.8.1",
     "web-vitals": "^3.5.0"
   },
   "devDependencies": {

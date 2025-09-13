@@ -46,7 +46,7 @@ interface AuthProviderProps {
 
 // Admin email whitelist - In production, this should come from Firestore
 const ADMIN_EMAILS = [
-  'admin@todaysnumbers.com',
+  import.meta.env.VITE_ADMIN_EMAIL || 'admin@todaysnumbers.com',
   // Add more admin emails here
 ];
 
@@ -69,11 +69,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (isDevelopmentMode) {
       // Mock authentication for development
       if (isAdminLogin) {
-        if (email === 'admin@todaysnumbers.com' && password === 'admin') {
+        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'admin@todaysnumbers.com';
+        const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin';
+        
+        if (email === adminEmail && password === adminPassword) {
           setCurrentUser(mockUser as User);
           return;
         } else {
-          throw new Error('Invalid admin credentials. Use admin@todaysnumbers.com / admin');
+          throw new Error(`Invalid admin credentials. Use ${adminEmail} / ${adminPassword}`);
         }
       } else {
         // Mock client authentication

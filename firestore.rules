@@ -5,8 +5,9 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && 
              request.auth.token.email in [
-               'admin@todaysnumbers.com'
-               // Add more admin emails here
+               'admin@todaysnumbers.com',
+               // The environment variable can't be used directly in rules
+               // Add more admin emails here as needed
              ];
     }
     

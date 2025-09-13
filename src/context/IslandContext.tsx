@@ -4,14 +4,124 @@ export interface Island {
   id: string;
   name: string;
   flag: string;
+  country_code: string;
+  timezone: string;
+  currency: string;
+  region: string;
+  population?: number;
 }
 
 export const ISLANDS: Island[] = [
-  { id: 'st-vincent', name: 'St. Vincent & Grenadines', flag: '🇻🇨' },
-  { id: 'st-lucia', name: 'St. Lucia', flag: '🇱🇨' },
-  { id: 'dominica', name: 'Dominica', flag: '🇩🇲' },
-  { id: 'grenada', name: 'Grenada', flag: '🇬🇩' },
-  { id: 'trinidad', name: 'Trinidad & Tobago', flag: '🇹🇹' },
+  { 
+    id: 'st-vincent', 
+    name: 'St. Vincent & Grenadines', 
+    flag: '🇻🇨', 
+    country_code: 'VC', 
+    timezone: 'America/St_Vincent', 
+    currency: 'XCD', 
+    region: 'Windward Islands',
+    population: 110000
+  },
+  { 
+    id: 'grenada', 
+    name: 'Grenada', 
+    flag: '🇬🇩', 
+    country_code: 'GD', 
+    timezone: 'America/Grenada', 
+    currency: 'XCD', 
+    region: 'Windward Islands',
+    population: 112000
+  },
+  { 
+    id: 'barbados', 
+    name: 'Barbados', 
+    flag: '🇧🇧', 
+    country_code: 'BB', 
+    timezone: 'America/Barbados', 
+    currency: 'BBD', 
+    region: 'Lesser Antilles',
+    population: 287000
+  },
+  { 
+    id: 'jamaica', 
+    name: 'Jamaica', 
+    flag: '🇯🇲', 
+    country_code: 'JM', 
+    timezone: 'America/Jamaica', 
+    currency: 'JMD', 
+    region: 'Greater Antilles',
+    population: 2961000
+  },
+  { 
+    id: 'trinidad', 
+    name: 'Trinidad & Tobago', 
+    flag: '🇹🇹', 
+    country_code: 'TT', 
+    timezone: 'America/Port_of_Spain', 
+    currency: 'TTD', 
+    region: 'Lesser Antilles',
+    population: 1399000
+  },
+  { 
+    id: 'st-kitts', 
+    name: 'St. Kitts & Nevis', 
+    flag: '🇰🇳', 
+    country_code: 'KN', 
+    timezone: 'America/St_Kitts', 
+    currency: 'XCD', 
+    region: 'Leeward Islands',
+    population: 53000
+  },
+  { 
+    id: 'guyana', 
+    name: 'Guyana', 
+    flag: '🇬🇾', 
+    country_code: 'GY', 
+    timezone: 'America/Guyana', 
+    currency: 'GYD', 
+    region: 'South America',
+    population: 787000
+  },
+  { 
+    id: 'belize', 
+    name: 'Belize', 
+    flag: '🇧🇿', 
+    country_code: 'BZ', 
+    timezone: 'America/Belize', 
+    currency: 'BZD', 
+    region: 'Central America',
+    population: 397000
+  },
+  { 
+    id: 'antigua', 
+    name: 'Antigua & Barbuda', 
+    flag: '🇦🇬', 
+    country_code: 'AG', 
+    timezone: 'America/Antigua', 
+    currency: 'XCD', 
+    region: 'Leeward Islands',
+    population: 98000
+  },
+  { 
+    id: 'st-lucia', 
+    name: 'St. Lucia', 
+    flag: '🇱🇨', 
+    country_code: 'LC', 
+    timezone: 'America/St_Lucia', 
+    currency: 'XCD', 
+    region: 'Windward Islands',
+    population: 183000
+  },
+  { 
+    id: 'dominica', 
+    name: 'Dominica', 
+    flag: '🇩🇲', 
+    country_code: 'DM', 
+    timezone: 'America/Dominica', 
+    currency: 'XCD', 
+    region: 'Windward Islands',
+    population: 72000
+  },
 ];
 
 interface IslandContextType {
@@ -45,10 +155,16 @@ const detectUserIsland = async (): Promise<Island> => {
     // Map country codes to islands
     const countryToIsland: { [key: string]: string } = {
       'VC': 'st-vincent',
+      'GD': 'grenada', 
+      'BB': 'barbados',
+      'JM': 'jamaica',
+      'TT': 'trinidad',
+      'KN': 'st-kitts',
+      'GY': 'guyana',
+      'BZ': 'belize',
+      'AG': 'antigua',
       'LC': 'st-lucia',
       'DM': 'dominica',
-      'GD': 'grenada',
-      'TT': 'trinidad',
     };
     
     const detectedIslandId = countryToIsland[data.country_code];

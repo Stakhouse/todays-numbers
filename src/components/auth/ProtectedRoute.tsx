@@ -35,9 +35,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/admin/login" replace />;
   }
 
-  // Redirect to login if not an admin
+  // Redirect to client home if authenticated but not an admin
   if (!isAdmin) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/all-islands" replace />;
   }
 
   // User is authenticated and is an admin, render the protected component

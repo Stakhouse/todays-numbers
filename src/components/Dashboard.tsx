@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
           <Grid container spacing={{ xs: 2, sm: 3 }}>
             {/* Lottery Numbers - Featured prominently */}
             <Grid item xs={12}>
-              <LotteryCard islandId={currentIsland.id} />
+              <LotteryCard islandId={currentIsland.id} maxGames={12} />
             </Grid>
 
             {/* Sports Scores */}

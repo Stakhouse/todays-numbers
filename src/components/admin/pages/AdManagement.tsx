@@ -4,12 +4,76 @@ import {
   Card,
   CardContent,
   Grid,
-  Chip,
-  LinearProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Divider,
+  Alert,
+  Snackbar,
 } from '@mui/material';
 import { Campaign, PendingActions, CheckCircle, Cancel } from '@mui/icons-material';
+import { useState } from 'react';
+import AdSubmissionsList from '../AdSubmissionsList';
+import { AdSubmission } from '../../../types/admin';
 
 const AdManagement: React.FC = () => {
+  // State for selected submission and dialog
+  const [selectedSubmission, setSelectedSubmission] = useState<AdSubmission | null>(null);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  
+  // State for snackbar notifications
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error' | 'info';
+  }>({ open: false, message: '', severity: 'info' });
+
+  // Handle view submission
+  const handleViewSubmission = (submission: AdSubmission) => {
+    setSelectedSubmission(submission);
+    setViewDialogOpen(true);
+  };
+
+  // Handle approve submission
+  const handleApproveSubmission = (id: string) => {
+    // In production, this would update Firestore
+    console.log(`Approving submission ${id}`);
+    setSnackbar({
+      open: true,
+      message: `Submission #${id} has been approved`,
+      severity: 'success',
+    });
+  };
+
+  // Handle reject submission
+  const handleRejectSubmission = (id: string) => {
+    // In production, this would update Firestore
+    console.log(`Rejecting submission ${id}`);
+    setSnackbar({
+      open: true,
+      message: `Submission #${id} has been rejected`,
+      severity: 'error',
+    });
+  };
+
+  // Handle edit submission
+  const handleEditSubmission = (id: string) => {
+    // In production, this would open an edit form
+    console.log(`Editing submission ${id}`);
+    setSnackbar({
+      open: true,
+      message: `Edit mode for submission #${id}`,
+      severity: 'info',
+    });
+  };
+
+  // Handle close snackbar
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   return (
     <Box>
       {/* Page Header */}
@@ -100,58 +164,158 @@ const AdManagement: React.FC = () => {
         </Grid>
       </Grid>
 
-      {/* Implementation Status */}
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom color="primary">
-            🚧 Phase 3 Development Status
-          </Typography>
-          <Typography variant="body2" color="text.secondary" paragraph>
-            This page is scheduled for implementation in Phase 3 - Ad Management System (Week 3).
-            The following features will be implemented:
-          </Typography>
-          
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              Progress: 0% Complete
-            </Typography>
-            <LinearProgress variant="determinate" value={0} />
-          </Box>
+      {/* Ad Submissions List */}
+      <AdSubmissionsList 
+        onViewSubmission={handleViewSubmission}
+        onApproveSubmission={handleApproveSubmission}
+        onRejectSubmission={handleRejectSubmission}
+        onEditSubmission={handleEditSubmission}
+      />
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Chip 
-              label="📋 Filterable submission table with status indicators" 
-              variant="outlined" 
-              size="small"
-            />
-            <Chip 
-              label="🏝️ Island and category filtering" 
-              variant="outlined" 
-              size="small"
-            />
-            <Chip 
-              label="🔍 Search functionality" 
-              variant="outlined" 
-              size="small"
-            />
-            <Chip 
-              label="✅ Approval/rejection workflow with review modal" 
-              variant="outlined" 
-              size="small"
-            />
-            <Chip 
-              label="🔄 Real-time Firestore integration" 
-              variant="outlined" 
-              size="small"
-            />
-            <Chip 
-              label="📝 Review notes and admin comments" 
-              variant="outlined" 
-              size="small"
-            />
-          </Box>
-        </CardContent>
-      </Card>
+      {/* View Submission Dialog */}
+      <Dialog 
+        open={viewDialogOpen} 
+        onClose={() => setViewDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        {selectedSubmission && (
+          <>
+            <DialogTitle>
+              Submission Details: {selectedSubmission.title}
+            </DialogTitle>
+            <DialogContent>
+              <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Submission ID
+                  </Typography>
+                  <Typography variant="body1">
+                    {selectedSubmission.id}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Status
+                  </Typography>
+                  <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
+                    {selectedSubmission.status}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Category
+                  </Typography>
+                  <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
+                    {selectedSubmission.category}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Submitted By
+                  </Typography>
+                  <Typography variant="body1">
+                    {selectedSubmission.submittedBy}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Submitted At
+                  </Typography>
+                  <Typography variant="body1">
+                    {new Date(selectedSubmission.submittedAt).toLocaleString()}
+                  </Typography>
+                </Grid>
+                {selectedSubmission.reviewedAt && (
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Reviewed At
+                    </Typography>
+                    <Typography variant="body1">
+                      {new Date(selectedSubmission.reviewedAt).toLocaleString()}
+                    </Typography>
+                  </Grid>
+                )}
+                {selectedSubmission.reviewedBy && (
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Reviewed By
+                    </Typography>
+                    <Typography variant="body1">
+                      {selectedSubmission.reviewedBy}
+                    </Typography>
+                  </Grid>
+                )}
+              </Grid>
+
+              <Divider sx={{ my: 3 }} />
+              
+              <Typography variant="h6" gutterBottom>
+                Submission Data
+              </Typography>
+              <Box sx={{ bgcolor: 'grey.100', p: 2, borderRadius: 1 }}>
+                <pre style={{ margin: 0, overflow: 'auto' }}>
+                  {JSON.stringify(selectedSubmission.data, null, 2)}
+                </pre>
+              </Box>
+
+              {selectedSubmission.notes && (
+                <>
+                  <Typography variant="h6" sx={{ mt: 3 }} gutterBottom>
+                    Review Notes
+                  </Typography>
+                  <Alert severity="info" sx={{ mt: 1 }}>
+                    {selectedSubmission.notes}
+                  </Alert>
+                </>
+              )}
+            </DialogContent>
+            <DialogActions>
+              {selectedSubmission.status === 'pending' && (
+                <>
+                  <Button 
+                    onClick={() => {
+                      handleRejectSubmission(selectedSubmission.id);
+                      setViewDialogOpen(false);
+                    }} 
+                    color="error"
+                  >
+                    Reject
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      handleApproveSubmission(selectedSubmission.id);
+                      setViewDialogOpen(false);
+                    }} 
+                    color="success"
+                  >
+                    Approve
+                  </Button>
+                </>
+              )}
+              <Button onClick={() => setViewDialogOpen(false)}>
+                Close
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
+
+      {/* Snackbar for notifications */}
+      <Snackbar 
+        open={snackbar.open} 
+        autoHideDuration={6000} 
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert 
+          onClose={handleCloseSnackbar} 
+          severity={snackbar.severity} 
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

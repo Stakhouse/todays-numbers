@@ -1,0 +1,1 @@
+when you need to run commands give me them in bash because your terminal isn't working.

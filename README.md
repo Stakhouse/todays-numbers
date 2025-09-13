@@ -26,8 +26,9 @@ A responsive, mobile-first web application delivering public and community data 
 - **UI Framework**: Material-UI (MUI) v5
 - **Routing**: React Router v6
 - **Styling**: MUI Theme + Custom Components
-- **State Management**: React Context API
-- **Build Tool**: Create React App
+- **State Management**: React Context API + React Query
+- **Build Tool**: Vite
+- **Backend**: Firebase (Authentication, Firestore)
 
 ## Getting Started
 
@@ -42,37 +43,58 @@ A responsive, mobile-first web application delivering public and community data 
    npm install
    ```
 
-2. **Start development server**:
+2. **Set up Firebase** (see [Firebase Admin Setup Guide](./FIREBASE_ADMIN_SETUP.md)):
    ```bash
-   npm start
+   npm run firebase:setup
    ```
 
-3. **Open your browser**:
-   Navigate to `http://localhost:3000`
+3. **Start development server**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser**:
+   Navigate to `http://localhost:5173`
 
 ### Build for Production
 
 ```bash
 npm run build
+npm run firebase:deploy
 ```
 
 ## Project Structure
 
 ```
-src/
-├── components/
-│   ├── Header.tsx              # Main navigation with island selector
-│   ├── Dashboard.tsx           # Main dashboard layout
-│   └── cards/
-│       ├── LotteryCard.tsx     # Lottery numbers display
-│       ├── SportsCard.tsx      # Sports scores
-│       ├── CommodityCard.tsx   # Market prices
-│       ├── HotelCard.tsx       # Hotel rates
-│       └── EventsCard.tsx      # Events and tickets
-├── context/
-│   └── IslandContext.tsx       # Island state management
-├── App.tsx                     # Main app component with theme
-└── index.tsx                   # App entry point
+├── public/                     # Static assets
+├── scripts/                    # Utility scripts
+├── src/
+│   ├── components/
+│   │   ├── admin/              # Admin dashboard components
+│   │   ├── auth/               # Authentication components
+│   │   ├── cards/
+│   │       ├── LotteryCard.tsx # Lottery numbers display
+│   │       ├── SportsCard.tsx  # Sports scores
+│   │       ├── CommodityCard.tsx # Market prices
+│   │       ├── HotelCard.tsx   # Hotel rates
+│   │       └── EventsCard.tsx  # Events and tickets
+│   │   ├── Header.tsx          # Main navigation with island selector
+│   │   └── Dashboard.tsx       # Main dashboard layout
+│   ├── config/
+│   │   └── firebase.ts         # Firebase configuration
+│   ├── context/
+│   │   ├── IslandContext.tsx   # Island state management
+│   │   └── AuthContext.tsx     # Authentication context
+│   ├── hooks/                  # Custom React hooks
+│   ├── services/               # API and service functions
+│   ├── types/                  # TypeScript type definitions
+│   ├── utils/                  # Utility functions
+│   ├── App.tsx                 # Main app component with theme
+│   └── main.tsx                # App entry point
+├── .env.local                  # Environment variables (create from template)
+├── firestore.rules             # Firestore security rules
+├── firestore.indexes.json      # Firestore indexes
+└── firebase.json               # Firebase configuration
 ```
 
 ## Design System
@@ -103,6 +125,32 @@ src/
 - **Commodities**: Weekly updates
 - **Hotels**: Weekly/monthly updates
 - **Events**: Updated by promoters
+
+## Admin Dashboard
+
+The admin dashboard allows authorized users to manage the application's data. See the [Admin Dashboard Checklist](./ADMIN_DASHBOARD_CHECKLIST.md) for implementation details.
+
+### Accessing the Admin Dashboard
+
+1. Navigate to `/admin/login`
+2. Log in with admin credentials
+3. You will be redirected to the admin dashboard
+
+### Available Scripts
+
+- `npm run dev` - Start the development server
+- `npm run build` - Build the production application
+- `npm run preview` - Preview the production build locally
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
+- `npm run quality-check` - Run code quality checks
+- `npm run firebase:setup` - Run Firebase setup script
+- `npm run firebase:deploy` - Deploy to Firebase
+- `npm run firebase:rules` - Deploy Firestore rules
+- `npm run firebase:test-auth` - Test Firebase authentication
+- `npm run install:deps` - Check and install required dependencies
+- `npm run test:admin-routes` - Test admin dashboard routing
+- `npm run test:ad-management` - Test Ad Management components
 
 ### Responsive Design
 - Mobile-first approach

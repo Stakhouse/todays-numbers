@@ -1,0 +1,325 @@
+.jamaica-lottery-results {
+  padding: 20px;
+  background: linear-gradient(135deg, #e0f7fa 0%, #f5f5f5 100%);
+  border-radius: 12px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.jamaica-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+  padding: 20px;
+  background: linear-gradient(135deg, #00bfa6 0%, #00897b 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 191, 166, 0.3);
+  color: white;
+}
+
+.jamaica-flag {
+  font-size: 3rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.jamaica-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin: 0;
+}
+
+.jamaica-operator {
+  font-size: 1.2rem;
+  color: #e0f7fa;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.jamaica-updated {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 1rem;
+  color: #e0f7fa;
+  margin-bottom: 0;
+}
+
+.jamaica-updated strong {
+  color: white;
+}
+
+.game-group {
+  margin-bottom: 36px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.game-group-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #006064;
+  margin: 0;
+  padding: 20px;
+  background: linear-gradient(90deg, #e0f7fa 0%, #b2ebf2 100%);
+  border-bottom: 2px solid #00bfa6;
+}
+
+.game-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  margin: 20px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid #e0f0f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #00bfa6, #00897b);
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 191, 166, 0.2);
+  border-color: #00bfa6;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 15px;
+  border-bottom: 1px dashed #e0f0f0;
+}
+
+.game-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #006064;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.game-jackpot {
+  background: linear-gradient(135deg, #ffbf00 0%, #ff8f00 100%);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 24px;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(255, 191, 0, 0.3);
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 2px 6px rgba(255, 191, 0, 0.3); }
+  to { box-shadow: 0 2px 12px rgba(255, 191, 0, 0.6); }
+}
+
+.game-details {
+  padding: 20px;
+}
+
+.game-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.game-info-item {
+  display: flex;
+  flex-direction: column;
+  background: #f8fdfe;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 3px solid #00bfa6;
+}
+
+.game-info-label {
+  font-size: 0.9rem;
+  color: #00838f;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.game-info-value {
+  font-size: 1.1rem;
+  color: #006064;
+  font-weight: 600;
+}
+
+.game-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 20px;
+  background: #f0fdff;
+  border-radius: 10px;
+  border: 1px dashed #b2ebf2;
+}
+
+.number-ball {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  animation: float 3s infinite ease-in-out;
+}
+
+.number-ball::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(30deg);
+  transition: all 0.3s ease;
+}
+
+.number-ball:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.number-ball:hover::after {
+  transform: rotate(30deg) translate(20%, 20%);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+.number-ball.red {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+}
+
+.number-ball.blue {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.number-ball.green {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.number-ball.purple {
+  background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+  box-shadow: 0 4px 8px rgba(156, 39, 176, 0.3);
+}
+
+.number-ball.orange {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+}
+
+.pending {
+  font-style: italic;
+  color: #90a4ae;
+  padding: 24px;
+  text-align: center;
+  background: #eceff1;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .jamaica-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .jamaica-title {
+    font-size: 2rem;
+  }
+  
+  .jamaica-flag {
+    font-size: 2.5rem;
+  }
+  
+  .game-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .number-ball {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+  
+  .game-group-title {
+    font-size: 1.4rem;
+  }
+  
+  .game-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .jamaica-lottery-results {
+    padding: 12px;
+  }
+  
+  .jamaica-header {
+    padding: 16px;
+  }
+  
+  .game-card {
+    margin: 12px;
+  }
+  
+  .number-ball {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
