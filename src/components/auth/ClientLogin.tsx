@@ -13,7 +13,6 @@ import {
   Container,
   Tabs,
   Tab,
-  Paper,
 } from '@mui/material';
 import { 
   Google as GoogleIcon, 
@@ -47,7 +46,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const UnifiedLogin: React.FC = () => {
+const ClientLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -64,7 +63,7 @@ const UnifiedLogin: React.FC = () => {
     if (isAdmin) {
       return <Navigate to="/admin" replace />;
     } else {
-      return <Navigate to="/" replace />;
+      return <Navigate to="/all-islands" replace />;
     }
   }
 
@@ -80,8 +79,8 @@ const UnifiedLogin: React.FC = () => {
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (isSignUp) {
-      // Handle signup
+    if (isSignUp && tabValue === 0) {
+      // Handle client signup
       if (!email || !password || !displayName) {
         setError('Please fill in all fields');
         return;
@@ -102,21 +101,23 @@ const UnifiedLogin: React.FC = () => {
     setError('');
 
     try {
-      if (isSignUp) {
-        // Handle signup (only for client)
+      if (isSignUp && tabValue === 0) {
+        // Handle client signup
         await signUpWithEmail(email, password, displayName);
-        navigate('/');
+        navigate('/all-islands');
       } else {
-        // Handle login
+        // Handle login for both client and admin
+        console.log('Login attempt:', { tabValue, email, password, isAdmin: tabValue === 1 });
         if (tabValue === 1) { // Admin login
           await signInWithEmail(email, password, true);
           navigate('/admin');
         } else { // Client login
           await signInWithEmail(email, password, false);
-          navigate('/');
+          navigate('/all-islands');
         }
       }
     } catch (error) {
+      console.error('Login error:', error);
       setError((error as Error).message);
     } finally {
       setIsLoading(false);
@@ -133,7 +134,7 @@ const UnifiedLogin: React.FC = () => {
         navigate('/admin');
       } else { // Client login
         await signInWithGoogle(false);
-        navigate('/');
+        navigate('/all-islands');
       }
     } catch (error) {
       setError((error as Error).message);
@@ -179,7 +180,7 @@ const UnifiedLogin: React.FC = () => {
             </Box>
 
             {/* Login Type Tabs */}
-            <Paper sx={{ mb: 3, backgroundColor: tabValue === 1 ? 'primary.light' : 'background.paper' }}>
+            <Box sx={{ mb: 3 }}>
               <Tabs
                 value={tabValue}
                 onChange={handleTabChange}
@@ -212,7 +213,7 @@ const UnifiedLogin: React.FC = () => {
                   }}
                 />
               </Tabs>
-            </Paper>
+            </Box>
 
             {/* Development Mode Notice */}
             {isDevelopmentMode && tabValue === 1 && (
@@ -357,7 +358,7 @@ const UnifiedLogin: React.FC = () => {
                   {isLoading ? (
                     <CircularProgress size={24} color="inherit" />
                   ) : (
-                    tabValue === 1 ? 'Sign In to Admin Portal' : (isSignUp ? 'Create Account' : 'Sign In')
+                    'Sign In to Admin Portal'
                   )}
                 </Button>
               </Box>
@@ -408,4 +409,4 @@ const UnifiedLogin: React.FC = () => {
   );
 };
 
-export default UnifiedLogin;
+export default ClientLogin;

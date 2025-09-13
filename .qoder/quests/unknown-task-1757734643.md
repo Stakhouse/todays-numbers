@@ -35,15 +35,17 @@ The FastAPI server will be implemented in `dev/ScraperAgent/server.py` with the 
 
 The WebSocket will transmit JSON messages with the following structure:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| island | string | The island name ("St. Vincent & the Grenadines") |
-| game | string | The lottery game name (e.g., "Super 6") |
-| draw_date | string | Date of the draw in YYYY-MM-DD format |
-| draw_time | string | Time of the draw in HH:MM format |
-| draw_number | string | Unique identifier for the draw |
-| numbers | array of integers | The winning numbers |
-| jackpot | string (optional) | Jackpot amount formatted as currency |
+```json
+{
+  "island": "St. Vincent & the Grenadines",
+  "game": "Super 6",
+  "draw_date": "2025-09-13",
+  "draw_time": "21:00",
+  "draw_number": "20250913-S6",
+  "numbers": [5, 9, 14, 22, 27, 31],
+  "jackpot": "EC$150,000"
+}
+```
 
 ### Implementation Plan
 
@@ -56,22 +58,26 @@ The WebSocket will transmit JSON messages with the following structure:
 
 ### WebSocket Client Hook
 
-A specialized hook `useSvgWebSocket` will be created to handle the SVG-specific WebSocket connection with the following interface:
+A specialized hook `useSvgWebSocket` will be created to handle the SVG-specific WebSocket connection:
 
-**SvgWebSocketMessage Interface:**
-- island: string - The island name
-- game: string - The lottery game name
-- draw_date: string - Date of the draw
-- draw_time: string - Time of the draw
-- draw_number: string - Unique identifier for the draw
-- numbers: number[] - The winning numbers
-- jackpot: string (optional) - Jackpot amount
+```typescript
+interface SvgWebSocketMessage {
+  island: string;
+  game: string;
+  draw_date: string;
+  draw_time: string;
+  draw_number: string;
+  numbers: number[];
+  jackpot?: string;
+}
 
-**UseSvgWebSocketOptions Interface:**
-- onUpdate: Function called when new data is received
-- onConnect: Function called when WebSocket connects
-- onDisconnect: Function called when WebSocket disconnects
-- onError: Function called when WebSocket encounters an error
+interface UseSvgWebSocketOptions {
+  onUpdate?: (data: SvgWebSocketMessage) => void;
+  onConnect?: () => void;
+  onDisconnect?: () => void;
+  onError?: (error: Event) => void;
+}
+```
 
 ### State Management
 

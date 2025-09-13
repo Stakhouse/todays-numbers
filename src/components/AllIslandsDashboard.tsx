@@ -1,6 +1,7 @@
 /**
  * All Islands Dashboard
- * Displays lottery data for all 11 Caribbean islands in a grid layout
+ * Displays comprehensive lottery data, hotel rates, events, and commodity prices
+ * for all 11 Caribbean islands with enhanced UI/UX
  */
 import React, { useState } from 'react';
 import {
@@ -21,9 +22,10 @@ import {
   ButtonGroup,
 } from '@mui/material';
 import { ViewModule, ViewList, Public, Refresh } from '@mui/icons-material';
-import { ISLANDS } from '../context/IslandContext';
-import LotteryCard from './cards/LotteryCard';
+import { ISLANDS, Island } from '../context/IslandContext';
 import { useLottery } from '../contexts/LotteryContext';
+import ComprehensiveIslandCard from './ComprehensiveIslandCard';
+import HorizontalIslandTabs from './HorizontalIslandTabs';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,6 +54,7 @@ const AllIslandsDashboard: React.FC = () => {
   const [selectedRegion, setSelectedRegion] = useState<number>(0);
   const [sortBy, setSortBy] = useState<'name' | 'population' | 'region'>('region');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [selectedIslandForTabs, setSelectedIslandForTabs] = useState<string | null>(null);
 
   // Group islands by region
   const regions = [
@@ -89,9 +92,23 @@ const AllIslandsDashboard: React.FC = () => {
     await actions.refreshData();
   };
 
+  const handleIslandExpand = (island: Island) => {
+    setSelectedIslandForTabs(island.id);
+  };
+
+  const handleIslandSelect = (islandId: string) => {
+    setSelectedIslandForTabs(islandId);
+    // Scroll to the selected island card
+    const element = document.querySelector(`[data-island-id="${islandId}"]`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   return (
-    <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 4 } }}>
-      <Fade in timeout={500}>
+    <>
+      <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 4 }, pb: { xs: 12, sm: 14 } }}>
+        <Fade in timeout={500}>
         <Box>
           {/* Header */}
           <Box sx={{ mb: 4, textAlign: 'center' }}>
@@ -227,55 +244,13 @@ const AllIslandsDashboard: React.FC = () => {
                     md={viewMode === 'list' ? 12 : 4} 
                     lg={viewMode === 'list' ? 12 : 3} 
                     key={island.id}
+                    data-island-id={island.id}
                   >
-                    <Paper 
-                      elevation={2} 
-                      sx={{ 
-                        p: 0, 
-                        height: '100%', 
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          elevation: 4,
-                          transform: 'translateY(-2px)'
-                        }
-                      }}
-                    >
-                      {/* Island Header */}
-                      <Box sx={{ 
-                        p: 2, 
-                        pb: 1, 
-                        background: `linear-gradient(135deg, ${island.region.includes('Windward') ? '#e3f2fd' : 
-                                     island.region.includes('Leeward') ? '#f3e5f5' : 
-                                     island.region.includes('Greater') ? '#e8f5e9' : 
-                                     island.region.includes('Lesser') ? '#fff3e0' : '#f5f5f5'} 0%, #ffffff 100%)`
-                      }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Typography variant="h4" sx={{ fontSize: '2rem' }}>
-                              {island.flag}
-                            </Typography>
-                            <Box>
-                              <Typography variant="h6" sx={{ fontWeight: 600, lineHeight: 1.2 }}>
-                                {island.name}
-                              </Typography>
-                              <Typography variant="caption" color="text.secondary">
-                                {island.region} • {island.currency}
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </Box>
-                        {island.population && (
-                          <Typography variant="caption" color="text.secondary">
-                            Population: {island.population.toLocaleString()}
-                          </Typography>
-                        )}
-                      </Box>
-
-                      {/* Lottery Data */}
-                      <Box sx={{ px: 2, pb: 2 }}>
-                        <LotteryCard islandId={island.id} maxGames={viewMode === 'list' ? 5 : 3} />
-                      </Box>
-                    </Paper>
+                    <ComprehensiveIslandCard
+                      island={island}
+                      isSelected={selectedIslandForTabs === island.id}
+                      onExpand={handleIslandExpand}
+                    />
                   </Grid>
                 ))}
               </Grid>
@@ -293,15 +268,23 @@ const AllIslandsDashboard: React.FC = () => {
           {/* Footer */}
           <Box sx={{ mt: 6, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Showing lottery data from {ISLANDS.length} Caribbean islands and territories
+              Showing comprehensive data from {ISLANDS.length} Caribbean islands and territories
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              Data updates automatically every 5 minutes • Last updated: {new Date().toLocaleTimeString()}
+              Lottery, hotel, event, and commodity data updates automatically • Last updated: {new Date().toLocaleTimeString()}
             </Typography>
           </Box>
         </Box>
       </Fade>
     </Container>
+    
+    {/* Horizontal Island Selection Tabs */}
+    <HorizontalIslandTabs
+      islands={ISLANDS}
+      selectedIsland={selectedIslandForTabs}
+      onIslandSelect={handleIslandSelect}
+    />
+  </>
   );
 };
 

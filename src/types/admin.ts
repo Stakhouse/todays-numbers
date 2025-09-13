@@ -169,44 +169,215 @@ export interface ScrapedLotteryResult {
 export interface ScraperStatus {
   id: string;
   island: string;
-  status: 'active' | 'inactive' | 'error';
+  status: 'active' | 'inactive' | 'error' | 'connecting';
   lastRun: Date;
   nextRun?: Date;
   successRate: number;
   errorMessage?: string;
   totalRuns: number;
   successfulRuns: number;
+  // Python-specific fields
+  pythonVersion?: string;
+  scraperVersion?: string;
+  websocketConnected: boolean;
+  lastWebsocketMessage?: Date;
+  uptime: number; // seconds
+  memoryUsage?: number; // MB
+  cpuUsage?: number; // percentage
+}
+
+// WebSocket connection status
+export interface WebSocketConnectionStatus {
+  island: string;
+  connected: boolean;
+  lastMessageReceived?: Date;
+  lastMessageSent?: Date;
+  connectionUptime: number; // seconds
+  messagesReceived: number;
+  messagesSent: number;
+  reconnectAttempts: number;
+  lastError?: string;
+}
+
+// Python scraper performance metrics
+export interface ScraperPerformanceMetrics {
+  island: string;
+  timeRange: {
+    start: Date;
+    end: Date;
+  };
+  totalRequests: number;
+  successfulRequests: number;
+  failedRequests: number;
+  averageResponseTime: number; // milliseconds
+  dataPointsScraped: number;
+  errorsEncountered: string[];
+  uptimePercentage: number;
+}
+
+// Data source types for hybrid system
+export type DataSource = 'scraper' | 'admin_entry' | 'manual' | 'imported';
+
+// Approval status for all data entries
+export type ApprovalStatus = 
+  | 'draft'           // Initial state for manual entries
+  | 'pending_approval' // Scraped data or submitted manual entries
+  | 'approved'        // Admin approved, ready to publish
+  | 'published'       // Live on frontend
+  | 'rejected'        // Admin rejected
+  | 'requires_changes' // Admin requested modifications
+  | 'archived';       // Removed from active use
+
+// Approval information
+export interface ApprovalInfo {
+  status: ApprovalStatus;
+  approvedBy?: string;     // admin user ID who approved
+  approvedAt?: Date;
+  rejectedBy?: string;     // admin user ID who rejected
+  rejectedAt?: Date;
+  approvalNotes?: string;  // admin comments on approval/rejection
+  changeRequests?: string; // specific changes requested
+  approvalLevel: 'island_admin' | 'super_admin' | 'auto_approved';
+}
+
+// Base interface for all data entries with source tracking AND approval workflow
+export interface BaseDataEntry {
+  id: string;
+  island: string;
+  source: DataSource;
+  approval: ApprovalInfo;  // MANDATORY APPROVAL INFO
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy?: string;      // admin user ID who created
+  lastModifiedBy?: string; // admin user ID who last modified
+  publishedAt?: Date;      // when it went live on frontend
+  isActive: boolean;
+  notes?: string;
 }
 
 // Combined lottery data (scraped + manual)
-export interface LotteryDataEntry {
-  id: string;
-  island: string;
+export interface LotteryDataEntry extends BaseDataEntry {
   game: string;
   numbers: number[];
   drawDate: Date;
   jackpot?: number;
   currency?: string;
-  source: 'scraper' | 'manual' | 'admin';
-  isActive: boolean;
   metadata?: {
     scraper?: {
       confidence: number;
       version: string;
       source_url?: string;
+      websocket_received_at?: Date;
     };
     admin?: {
       enteredBy: string;
-      notes?: string;
-    };
-    verification?: {
-      isVerified: boolean;
-      verifiedBy?: string;
-      verifiedAt?: Date;
+      verified: boolean;
+      override_reason?: string;
     };
   };
-  createdAt: Date;
-  updatedAt: Date;
+}
+
+// Hotel data entry (admin-entered)
+export interface HotelDataEntry extends BaseDataEntry {
+  hotelName: string;
+  location: string;
+  rate: number;
+  currency: string;
+  rateType: 'per_night' | 'per_week' | 'all_inclusive';
+  rating?: number;
+  amenities: string[];
+  roomTypes: Array<{
+    type: string;
+    rate: number;
+    available: number;
+  }>;
+  seasonalRates?: Array<{
+    season: string;
+    startDate: Date;
+    endDate: Date;
+    rate: number;
+  }>;
+  contactInfo: {
+    phone?: string;
+    email?: string;
+    website?: string;
+  };
+}
+
+// Commodity price entry (admin-entered)
+export interface CommodityDataEntry extends BaseDataEntry {
+  commodityName: string;
+  category: 'food' | 'fuel' | 'household' | 'building_materials' | 'other';
+  price: number;
+  currency: string;
+  unit: string; // 'per lb', 'per liter', 'per gallon', etc.
+  previousPrice?: number;
+  changePercentage?: number;
+  marketLocation?: string;
+  supplier?: string;
+  qualityGrade?: string;
+}
+
+// Event data entry (admin-entered)
+export interface EventDataEntry extends BaseDataEntry {
+  eventName: string;
+  eventType: 'carnival' | 'music_festival' | 'cultural' | 'sports' | 'religious' | 'other';
+  description: string;
+  startDate: Date;
+  endDate?: Date;
+  location: string;
+  venue?: string;
+  ticketPrice?: number;
+  currency?: string;
+  organizer: string;
+  capacity?: number;
+  contactInfo: {
+    phone?: string;
+    email?: string;
+    website?: string;
+    socialMedia?: string[];
+  };
+  tags: string[];
+}
+
+// Approval workflow management interfaces
+export interface ApprovalQueueItem {
+  id: string;
+  dataType: 'lottery' | 'hotel' | 'commodity' | 'event';
+  island: string;
+  title: string;           // human-readable title
+  summary: string;         // brief description of data
+  source: DataSource;
+  submittedAt: Date;
+  submittedBy?: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  estimatedReviewTime: number; // minutes
+  dataPreview: any;       // preview of the actual data
+  requiresSpecialPermission?: boolean;
+}
+
+// Batch approval operations
+export interface BatchApprovalRequest {
+  itemIds: string[];
+  action: 'approve' | 'reject' | 'request_changes';
+  notes?: string;
+  approverUserId: string;
+}
+
+// Approval workflow statistics
+export interface ApprovalWorkflowStats {
+  pendingCount: number;
+  approvedToday: number;
+  rejectedToday: number;
+  averageApprovalTime: number; // minutes
+  oldestPendingItem?: {
+    id: string;
+    title: string;
+    daysPending: number;
+  };
+  approvalsByAdmin: Record<string, number>; // admin ID -> approval count
+  approvalsByDataType: Record<string, number>;
+  approvalsByIsland: Record<string, number>;
 }
 
 // Dashboard statistics interface

@@ -10,8 +10,10 @@ import {
   CircularProgress,
   Button,
   IconButton,
+  Tabs,
+  Tab,
 } from '@mui/material';
-import { LocationOn, Login as LoginIcon, AccountCircle, ExitToApp } from '@mui/icons-material';
+import { LocationOn, Login as LoginIcon, Home, Info, ContactMail, AccountCircle, ExitToApp, Public, Casino } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useIsland, ISLANDS } from '../context/IslandContext';
 import { useAuth } from '../context/AuthContext';
@@ -28,6 +30,24 @@ const Header: React.FC = () => {
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
+    }
+  };
+
+  // Determine current tab based on route
+  const getCurrentTab = () => {
+    if (location.pathname === '/all-islands') return 0; // Make All Islands the first tab (new default)
+    if (location.pathname === '/about') return 1;
+    if (location.pathname === '/contact') return 2;
+    return 0; // Default to All Islands
+  };
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    if (newValue === 0) {
+      navigate('/all-islands'); // All Islands is now the default/home
+    } else if (newValue === 1) {
+      navigate('/about');
+    } else if (newValue === 2) {
+      navigate('/contact');
     }
   };
 
@@ -227,6 +247,52 @@ const Header: React.FC = () => {
           )}
         </Box>
       </Toolbar>
+
+      {/* Navigation Tabs - Second Row */}
+      <Box sx={{ backgroundColor: 'primary.dark' }}>
+        <Box sx={{ maxWidth: 1200, mx: 'auto', px: 2 }}>
+          <Tabs
+            value={getCurrentTab()}
+            onChange={handleTabChange}
+            sx={{
+              '& .MuiTab-root': {
+                color: 'rgba(255,255,255,0.8)',
+                textTransform: 'none',
+                fontSize: '0.95rem',
+                fontWeight: 500,
+                minHeight: 48,
+                '&:hover': {
+                  color: 'white',
+                },
+                '&.Mui-selected': {
+                  color: 'white',
+                  fontWeight: 600,
+                },
+              },
+              '& .MuiTabs-indicator': {
+                backgroundColor: 'secondary.main',
+                height: 3,
+              },
+            }}
+          >
+            <Tab 
+              icon={<Public sx={{ fontSize: 20 }} />} 
+              iconPosition="start" 
+              label="All Islands" 
+            />
+            <Tab 
+              icon={<Info sx={{ fontSize: 20 }} />} 
+              iconPosition="start" 
+              label="About" 
+            />
+            <Tab 
+              icon={<ContactMail sx={{ fontSize: 20 }} />} 
+              iconPosition="start" 
+              label="Contact" 
+            />
+          </Tabs>
+        </Box>
+      </Box>
     </AppBar>
   );
 };

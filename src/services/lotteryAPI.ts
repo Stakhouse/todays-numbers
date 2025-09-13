@@ -84,7 +84,7 @@ class LotteryAPI {
           throw new Error('Server error. Please try again later.');
         }
         if (error.code === 'ECONNREFUSED') {
-          throw new Error('Unable to connect to lottery service. Please check if the backend is running.');
+          throw new Error('Unable to connect to Python scraper backend. Please check if the scraper services are running.');
         }
         
         throw new Error(error?.response?.data?.detail || error.message || 'Unknown error occurred');
@@ -128,7 +128,8 @@ class LotteryAPI {
   }
 
   /**
-   * Get scraper status and metrics
+   * Get Python scraper status and health metrics for all islands
+   * Returns connection status, uptime, success rates for each scraper
    */
   async getScraperStatus(): Promise<any> {
     const response: AxiosResponse = await this.client.get('/metrics/scraper-status');
@@ -169,6 +170,38 @@ class LotteryAPI {
   }
 
   /**
+   * Get WebSocket connection status for all islands
+   * Admin feature to monitor Python scraper WebSocket connections
+   */
+  async getWebSocketStatus(): Promise<any> {
+    const response: AxiosResponse = await this.client.get('/metrics/websocket-status');
+    return response.data;
+  }
+
+  /**
+   * Restart a specific Python scraper (admin feature)
+   * @param island - Island identifier
+   */
+  async restartScraper(island: string): Promise<any> {
+    const response: AxiosResponse = await this.client.post(`/admin/scraper/restart/${island.toLowerCase()}`);
+    return response.data;
+  }
+
+  /**
+   * Get detailed scraper performance metrics
+   * @param island - Island identifier (optional)
+   * @param hours - Hours to analyze (default: 24)
+   */
+  async getScraperMetrics(island: string | null = null, hours: number = 24): Promise<any> {
+    let url = `/metrics/scraper-performance?hours=${hours}`;
+    if (island) {
+      url += `&island=${island.toLowerCase()}`;
+    }
+    const response: AxiosResponse = await this.client.get(url);
+    return response.data;
+  }
+
+  /**
    * Utility method to format API data for React components
    * @param apiData - Raw API response
    */
@@ -200,14 +233,15 @@ class LotteryAPI {
   }
 
   /**
-   * Check if backend is available
+   * Check if Python scraper backend is available
+   * Used to determine whether to use live data or fallback to mock data
    */
   async isBackendAvailable(): Promise<boolean> {
     try {
       await this.healthCheck();
       return true;
     } catch (error) {
-      console.warn('Backend not available:', error instanceof Error ? error.message : 'Unknown error');
+      console.warn('Python scraper backend not available:', error instanceof Error ? error.message : 'Unknown error');
       return false;
     }
   }

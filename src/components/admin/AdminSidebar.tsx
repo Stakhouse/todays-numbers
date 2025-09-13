@@ -16,6 +16,7 @@ import {
   LocationOn,
   Assessment,
   Analytics,
+  PlaylistAddCheck,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -43,6 +44,13 @@ const menuItems: MenuItemType[] = [
     path: '/admin/ads',
     badge: 'New',
     badgeColor: 'secondary',
+  },
+  {
+    title: 'Approval Dashboard',
+    icon: PlaylistAddCheck,
+    path: '/admin/approvals',
+    badge: '12',
+    badgeColor: 'warning',
   },
   {
     title: 'User Management',

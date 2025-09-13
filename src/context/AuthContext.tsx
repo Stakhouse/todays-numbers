@@ -50,6 +50,9 @@ const ADMIN_EMAILS = [
   // Add more admin emails here
 ];
 
+console.log('ADMIN_EMAILS:', ADMIN_EMAILS);
+console.log('VITE_ADMIN_EMAIL:', import.meta.env.VITE_ADMIN_EMAIL);
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -64,6 +67,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const isAdmin = currentUser ? ADMIN_EMAILS.includes(currentUser.email || '') : false;
+  
+  console.log('Current user:', currentUser);
+  console.log('Is admin:', isAdmin);
+  console.log('Current user email:', currentUser?.email);
+  console.log('Admin emails list:', ADMIN_EMAILS);
 
   const signInWithEmail = async (email: string, password: string, isAdminLogin = false): Promise<void> => {
     if (isDevelopmentMode) {
@@ -72,11 +80,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'admin@todaysnumbers.com';
         const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin';
         
+        console.log('Admin login attempt:', { email, password, adminEmail, adminPassword });
+        
         if (email === adminEmail && password === adminPassword) {
+          console.log('Admin login successful');
           setCurrentUser(mockUser as User);
           return;
         } else {
-          throw new Error(`Invalid admin credentials. Use ${adminEmail} / ${adminPassword}`);
+          const errorMessage = `Invalid admin credentials. Use ${adminEmail} / ${adminPassword}`;
+          console.error(errorMessage);
+          throw new Error(errorMessage);
         }
       } else {
         // Mock client authentication

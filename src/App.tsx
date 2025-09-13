@@ -9,8 +9,7 @@ import About from './components/pages/About';
 import Contact from './components/pages/Contact';
 import LotteryDetails from './components/pages/LotteryDetails';
 import IslandPage from './components/pages/IslandPage';
-import AdminLogin from './components/auth/AdminLogin';
-import UnifiedLogin from './components/auth/UnifiedLogin';
+import ClientLogin from './components/auth/ClientLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminLayout from './components/admin/AdminLayout';
 import AdManagement from './components/admin/pages/AdManagement';
@@ -195,9 +194,8 @@ function App() {
                     </Box>
                   } />
                   
-                  {/* Login routes */}
-                  <Route path="/login" element={<UnifiedLogin />} />
-                  <Route path="/admin/login" element={<AdminLogin />} />
+                  {/* Login route - single interface for both admin and client */}
+                  <Route path="/login" element={<ClientLogin />} />
                   
                   {/* Admin routes */}
                   <Route path="/admin" element={
