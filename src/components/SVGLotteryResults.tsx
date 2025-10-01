@@ -138,12 +138,32 @@ const SVGLotteryResults: React.FC<SVGLotteryResultsProps> = ({ islandId = 'st-vi
                   </Typography>
                 </Grid>
                 {currentDraw.draw_number && (
-                  <Grid item xs={12} className="svg-game-info-item">
+                  <Grid item xs={12} sm={6} className="svg-game-info-item">
                     <Typography variant="body2" className="svg-game-info-label">
                       Draw #
                     </Typography>
                     <Typography variant="body1" className="svg-game-info-value">
                       {currentDraw.draw_number}
+                    </Typography>
+                  </Grid>
+                )}
+                {game.frequency && (
+                  <Grid item xs={12} sm={6} className="svg-game-info-item">
+                    <Typography variant="body2" className="svg-game-info-label">
+                      Frequency
+                    </Typography>
+                    <Typography variant="body1" className="svg-game-info-value">
+                      {game.frequency}
+                    </Typography>
+                  </Grid>
+                )}
+                {game.draw_times && game.draw_times.length > 0 && (
+                  <Grid item xs={12} className="svg-game-info-item">
+                    <Typography variant="body2" className="svg-game-info-label">
+                      All Draw Times
+                    </Typography>
+                    <Typography variant="body1" className="svg-game-info-value">
+                      {game.draw_times.join(', ')}
                     </Typography>
                   </Grid>
                 )}
@@ -190,12 +210,32 @@ const SVGLotteryResults: React.FC<SVGLotteryResultsProps> = ({ islandId = 'st-vi
                   </Typography>
                 </Grid>
                 {currentDraw.draw_number && (
-                  <Grid item xs={12} className="svg-game-info-item">
+                  <Grid item xs={12} sm={6} className="svg-game-info-item">
                     <Typography variant="body2" className="svg-game-info-label">
                       Draw #
                     </Typography>
                     <Typography variant="body1" className="svg-game-info-value">
                       {currentDraw.draw_number}
+                    </Typography>
+                  </Grid>
+                )}
+                {game.frequency && (
+                  <Grid item xs={12} sm={6} className="svg-game-info-item">
+                    <Typography variant="body2" className="svg-game-info-label">
+                      Frequency
+                    </Typography>
+                    <Typography variant="body1" className="svg-game-info-value">
+                      {game.frequency}
+                    </Typography>
+                  </Grid>
+                )}
+                {game.draw_times && game.draw_times.length > 0 && (
+                  <Grid item xs={12} className="svg-game-info-item">
+                    <Typography variant="body2" className="svg-game-info-label">
+                      Draw Times
+                    </Typography>
+                    <Typography variant="body1" className="svg-game-info-value">
+                      {game.draw_times.join(', ')}
                     </Typography>
                   </Grid>
                 )}

@@ -126,6 +126,7 @@ export const ISLANDS: Island[] = [
 
 interface IslandContextType {
   currentIsland: Island;
+  islands: Island[]; // Add islands array for AllIslandsDashboard compatibility
   setCurrentIsland: (island: Island) => void;
   isLoading: boolean;
 }
@@ -220,6 +221,7 @@ export const IslandProvider: React.FC<IslandProviderProps> = ({ children }) => {
     <IslandContext.Provider
       value={{
         currentIsland,
+        islands: ISLANDS, // Include all islands for compatibility
         setCurrentIsland: handleSetCurrentIsland,
         isLoading,
       }}

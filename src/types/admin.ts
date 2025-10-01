@@ -128,7 +128,7 @@ export interface AuditLogEntry {
   userId: string;
   userEmail: string;
   action: string;
-  resourceType: 'ad' | 'user' | 'island' | 'system';
+  resourceType: 'ad' | 'user' | 'island' | 'system' | 'lottery' | 'hotel' | 'commodity' | 'event';
   resourceId?: string;
   details: any;
   timestamp: Date;

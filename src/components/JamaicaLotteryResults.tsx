@@ -88,6 +88,26 @@ const JamaicaLotteryResults: React.FC<JamaicaLotteryResultsProps> = ({ islandId 
               {game.draw_time || 'Pending'}
             </Typography>
           </Grid>
+          {game.frequency && (
+            <Grid item xs={12} sm={6} className="game-info-item">
+              <Typography variant="body2" className="game-info-label">
+                Frequency
+              </Typography>
+              <Typography variant="body1" className="game-info-value">
+                {game.frequency}
+              </Typography>
+            </Grid>
+          )}
+          {game.draw_times && game.draw_times.length > 0 && (
+            <Grid item xs={12} className="game-info-item">
+              <Typography variant="body2" className="game-info-label">
+                Draw Times
+              </Typography>
+              <Typography variant="body1" className="game-info-value">
+                {game.draw_times.join(', ')}
+              </Typography>
+            </Grid>
+          )}
           {game.draw_number && (
             <Grid item xs={12} className="game-info-item">
               <Typography variant="body2" className="game-info-label">

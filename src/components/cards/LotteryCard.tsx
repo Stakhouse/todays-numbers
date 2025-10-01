@@ -78,7 +78,7 @@ const LotteryCard: React.FC<LotteryCardProps> = ({ islandId, maxGames = 2 }) => 
       border: '1px solid #ffd54f',
     },
   } : {
-    backgroundColor: '#FFF8E1',
+    background: '#FFF8E1', // Use background instead of backgroundColor for consistency
     cursor: 'pointer',
     transition: 'transform 0.2s, box-shadow 0.2s',
     height: '100%',

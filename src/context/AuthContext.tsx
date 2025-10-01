@@ -22,7 +22,9 @@ const mockUser: Partial<User> = {
 
 interface AuthContextType {
   currentUser: User | null;
+  loading: boolean; // Add loading property for compatibility
   isLoading: boolean;
+  login: (email: string, password: string) => Promise<void>; // Add login method for compatibility
   signInWithEmail: (email: string, password: string, isAdminLogin?: boolean) => Promise<void>;
   signInWithGoogle: (isAdminLogin?: boolean) => Promise<void>;
   signUpWithEmail: (email: string, password: string, displayName: string) => Promise<void>;
@@ -216,9 +218,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return unsubscribe;
   }, []);
 
+  // Compatibility method - login is just signInWithEmail without admin flag
+  const login = async (email: string, password: string): Promise<void> => {
+    await signInWithEmail(email, password, false);
+  };
+
   const value: AuthContextType = {
     currentUser,
+    loading: isLoading, // Alias for compatibility
     isLoading,
+    login, // Compatibility method
     signInWithEmail,
     signInWithGoogle,
     signUpWithEmail,

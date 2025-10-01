@@ -189,271 +189,977 @@ export const LotteryProvider: React.FC<LotteryProviderProps> = ({ children }) =>
         'dominica': 'Dominica'
       };
       
-      // Create different operators for each island
+      // Enhanced operators with accurate names from NextTask.md
       const operators: { [key: string]: string } = {
-        'st-vincent': 'SVG National Lottery',
-        'grenada': 'Grenada National Lottery',
-        'barbados': 'Barbados Lottery',
-        'jamaica': 'Jamaica Lottery',
-        'trinidad': 'Trinidad & Tobago Lottery',
-        'st-kitts': 'St. Kitts-Nevis Lottery',
-        'guyana': 'Guyana Lottery',
-        'belize': 'Belize Lottery',
-        'antigua': 'Antigua & Barbuda Lottery',
-        'st-lucia': 'St. Lucia Lottery',
-        'dominica': 'Dominica Lottery'
+        'st-vincent': 'NLASVG / SVG Lottery',
+        'grenada': 'NLA Grenada',
+        'barbados': 'Barbados Lottery / mybarbadoslottery.com',
+        'jamaica': 'Supreme Ventures / Jamaican Lottery',
+        'trinidad': 'NLCB / Play Whe',
+        'st-kitts': 'Saint Kitts & Nevis Lottery',
+        'guyana': 'Guyana Lottery / National Lottery',
+        'belize': 'Belize Government Lotteries / lotteries.bz',
+        'antigua': 'Antigua & Barbuda Local Lottery',
+        'st-lucia': 'St Lucia National Lottery',
+        'dominica': 'DomLottery / Dominica National Lottery'
       };
       
-      // For Jamaica, create specific games with correct fields
+      // For Jamaica, create specific games with correct fields based on NextTask.md
       let games;
       if (island === 'jamaica') {
-        // Create specific games for Jamaica with correct placeholders
+        // Jamaica games with accurate draw times from Supreme Ventures
         games = [
-          {
-            id: 'jamaica-cash-pot',
-            game: 'Cash Pot',
-            numbers: [5],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090801',
-            draw_time: '08:30',
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 1000000) + 100000)
-          },
-          {
-            id: 'jamaica-pick-3',
-            game: 'Pick 3',
-            numbers: [3, 1, 7],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090802',
-            draw_time: '10:30',
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 50000) + 10000)
-          },
-          {
-            id: 'jamaica-pick-4',
-            game: 'Pick 4',
-            numbers: [9, 2, 5, 1],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090803',
-            draw_time: '13:00',
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 100000) + 20000)
-          },
-          {
-            id: 'jamaica-lucky-5',
-            game: 'Lucky 5',
-            numbers: [12, 25, 7, 33, 41],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090804',
-            draw_time: '20:25',
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 2000000) + 500000)
-          },
           {
             id: 'jamaica-lotto',
             game: 'Lotto',
-            numbers: [11, 23, 45, 9, 30, 5],
-            draw_date: new Date().toISOString(),
-            draw_number: '20250909-TUE',
-            draw_time: '20:30',
+            numbers: [11, 23, 45, 9, 30, 5, 12], // Last number is bonus
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'LOTTO-WED-001',
+            draw_time: 'Wednesday 20:25',
+            frequency: 'Twice weekly',
+            draw_times: ['Wednesday 20:25', 'Saturday 20:25'],
             drawDateFormatted: new Date().toLocaleDateString(),
             jackpotFormatted: new Intl.NumberFormat('en-US', {
               style: 'currency',
-              currency: 'USD',
+              currency: 'JMD',
               minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 5000000) + 1000000)
+            }).format(Math.floor(Math.random() * 50000000) + 10000000)
           },
           {
             id: 'jamaica-super-lotto',
             game: 'Super Lotto',
             numbers: [8, 19, 33, 42, 27, 6],
-            draw_date: new Date().toISOString(),
-            draw_number: '20250909-TUE',
-            draw_time: '20:30',
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'SLOTTO-TUE-001',
+            draw_time: 'Tuesday 20:30',
+            frequency: 'Twice weekly',
+            draw_times: ['Tuesday 20:30', 'Friday 20:30'],
             drawDateFormatted: new Date().toLocaleDateString(),
             jackpotFormatted: new Intl.NumberFormat('en-US', {
               style: 'currency',
-              currency: 'USD',
+              currency: 'JMD',
               minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 10000000) + 2000000)
+            }).format(Math.floor(Math.random() * 100000000) + 20000000)
+          },
+          // Multi-draw Pick games with 5 daily draws
+          {
+            id: 'jamaica-pick-4-morning',
+            game: 'Pick 4',
+            numbers: [9, 2, 5, 1],
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'P4-08:30-001',
+            draw_time: '08:30',
+            frequency: '5 draws/day',
+            draw_times: ['08:30', '10:30', '13:00', '17:00', '20:25'],
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'JMD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 500000) + 100000)
+          },
+          {
+            id: 'jamaica-pick-3-morning',
+            game: 'Pick 3',
+            numbers: [3, 1, 7],
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'P3-08:30-001',
+            draw_time: '08:30',
+            frequency: '5 draws/day',
+            draw_times: ['08:30', '10:30', '13:00', '17:00', '20:25'],
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'JMD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 250000) + 50000)
+          },
+          {
+            id: 'jamaica-pick-2-morning',
+            game: 'Pick 2',
+            numbers: [4, 8],
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'P2-08:30-001',
+            draw_time: '08:30',
+            frequency: 'Daily',
+            draw_times: ['08:30', '10:30', '13:00', '17:00', '20:25'],
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'JMD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 100000) + 25000)
+          },
+          {
+            id: 'jamaica-cash-pot',
+            game: 'Cash Pot',
+            numbers: [5],
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'CP-DAILY-001',
+            draw_time: 'Daily',
+            frequency: 'Daily',
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'JMD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 1000000) + 200000)
+          },
+          {
+            id: 'jamaica-lucky-5',
+            game: 'Lucky 5',
+            numbers: [12, 25, 7, 33, 41],
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'L5-DAILY-001',
+            draw_time: 'Daily',
+            frequency: 'Daily',
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'JMD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 2000000) + 500000)
+          },
+          {
+            id: 'jamaica-top-draw',
+            game: 'Top Draw',
+            numbers: [9, 21, 35, 44, 2],
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'TD-MULTI-001',
+            draw_time: 'Multiple draws/day',
+            frequency: 'Multiple draws/day',
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'JMD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 400000) + 80000)
           },
           {
             id: 'jamaica-dollaz',
             game: 'Dollaz!',
             numbers: [15, 22, 7],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090805',
-            draw_time: '15:00',
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'DZ-VAR-001',
+            draw_time: 'Variable',
+            frequency: 'Variable',
             drawDateFormatted: new Date().toLocaleDateString(),
             jackpotFormatted: new Intl.NumberFormat('en-US', {
               style: 'currency',
-              currency: 'USD',
+              currency: 'JMD',
               minimumFractionDigits: 0
             }).format(Math.floor(Math.random() * 500000) + 100000)
           },
           {
             id: 'jamaica-hot-pick',
             game: 'Hot Pick',
-            numbers: [14, 28, 3, 37],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090806',
-            draw_time: '17:00',
+            numbers: [14],
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'HP-DAILY-001',
+            draw_time: 'Daily',
+            frequency: 'Daily',
             drawDateFormatted: new Date().toLocaleDateString(),
             jackpotFormatted: new Intl.NumberFormat('en-US', {
               style: 'currency',
-              currency: 'USD',
+              currency: 'JMD',
               minimumFractionDigits: 0
             }).format(Math.floor(Math.random() * 300000) + 50000)
           },
           {
-            id: 'jamaica-top-draw',
-            game: 'Top Draw',
-            numbers: [9, 21, 35, 44, 2],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090807',
-            draw_time: '18:00',
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 400000) + 80000)
-          },
-          {
             id: 'jamaica-money-time',
-            game: 'Money Time',
+            game: 'Money Time / Monsta Ball',
             numbers: [16, 31, 8, 43, 25, 39],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090808',
-            draw_time: '19:00',
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'MT-PROMO-001',
+            draw_time: 'Promotional / occasional',
+            frequency: 'Promotional / occasional',
             drawDateFormatted: new Date().toLocaleDateString(),
             jackpotFormatted: new Intl.NumberFormat('en-US', {
               style: 'currency',
-              currency: 'USD',
+              currency: 'JMD',
               minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 800000) + 200000)
-          },
-          {
-            id: 'jamaica-monsta-ball',
-            game: 'Monsta Ball',
-            numbers: [13, 26, 4, 38, 17],
-            draw_date: new Date().toISOString(),
-            draw_number: '2025090809',
-            draw_time: '20:00',
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 1500000) + 300000)
+            }).format(Math.floor(Math.random() * 5000000) + 1000000)
           }
         ];
       } else if (island === 'st-vincent') {
-        // Create specific games for St. Vincent & Grenadines matching expected scraper format
-        // Updated to match the exact requirements: Super 6, Lotto, 3D, Play 4
+        // St. Vincent & Grenadines games with enhanced draw times from NextTask.md
         games = [
+          {
+            id: 'svg-lotto',
+            game: 'Lotto',
+            numbers: [7, 11, 4, 2, 9, 15], // Last number is bonus
+            draw_date: new Date().toISOString().split('T')[0],
+            draw_number: 'SVG-LOTTO-TUE-001',
+            draw_time: 'Tuesday 21:00',
+            frequency: 'Twice weekly',
+            draw_times: ['Tuesday 21:00', 'Friday 21:00'],
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'XCD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 1000000) + 200000)
+          },
           {
             id: 'svg-super-6',
             game: 'Super 6',
             numbers: [12, 18, 25, 33, 41, 45],
-            draw_date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
-            draw_number: '1234',
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 500000) + 50000)
-          },
-          {
-            id: 'svg-lotto',
-            game: 'Lotto',
-            numbers: [7, 11, 4, 2, 9],
             draw_date: new Date().toISOString().split('T')[0],
-            draw_number: '5678',
+            draw_number: 'SVG-S6-TUE-001',
+            draw_time: 'Tuesday 21:00',
+            frequency: 'Twice weekly',
+            draw_times: ['Tuesday 21:00', 'Friday 21:00'],
             drawDateFormatted: new Date().toLocaleDateString(),
             jackpotFormatted: new Intl.NumberFormat('en-US', {
               style: 'currency',
-              currency: 'USD',
+              currency: 'XCD',
               minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 50000) + 10000)
+            }).format(Math.floor(Math.random() * 500000) + 100000)
           },
           {
-            id: 'svg-3d',
+            id: 'svg-3d-day',
             game: '3D',
             numbers: [4, 8, 2],
             draw_date: new Date().toISOString().split('T')[0],
-            draw_number: '9012',
-            drawDateFormatted: new Date().toLocaleDateString()
+            draw_number: 'SVG-3D-DAY-001',
+            draw_time: 'Day',
+            frequency: 'Multiple draws/day',
+            draw_times: ['Day', 'Night'],
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'XCD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 25000) + 5000)
           },
           {
-            id: 'svg-play-4',
+            id: 'svg-play-4-day',
             game: 'Play 4',
             numbers: [3, 7, 1, 5],
             draw_date: new Date().toISOString().split('T')[0],
-            draw_number: '3456',
-            drawDateFormatted: new Date().toLocaleDateString()
+            draw_number: 'SVG-P4-DAY-001',
+            draw_time: 'Day',
+            frequency: 'Multiple draws/day',
+            draw_times: ['Day', 'Night'],
+            drawDateFormatted: new Date().toLocaleDateString(),
+            jackpotFormatted: new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'XCD',
+              minimumFractionDigits: 0
+            }).format(Math.floor(Math.random() * 50000) + 10000)
           }
         ];
       } else {
-        // Create multiple games for other islands
-        games = [
-          {
-            id: `${island}-lotto`,
-            game: 'National Lotto',
-            numbers: Array.from({ length: 6 }, () => Math.floor(Math.random() * 40) + 1),
-            draw_date: new Date().toISOString(),
-            jackpot: Math.floor(Math.random() * 1000000) + 100000,
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 1000000) + 100000)
-          },
-          {
-            id: `${island}-pick3`,
-            game: 'Pick 3',
-            numbers: Array.from({ length: 3 }, () => Math.floor(Math.random() * 10)),
-            draw_date: new Date().toISOString(),
-            jackpot: Math.floor(Math.random() * 50000) + 10000,
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 50000) + 10000)
-          },
-          {
-            id: `${island}-pick4`,
-            game: 'Pick 4',
-            numbers: Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)),
-            draw_date: new Date().toISOString(),
-            jackpot: Math.floor(Math.random() * 100000) + 20000,
-            drawDateFormatted: new Date().toLocaleDateString(),
-            jackpotFormatted: new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format(Math.floor(Math.random() * 100000) + 20000)
-          }
-        ];
+        // Create island-specific games based on NextTask.md data
+        if (island === 'trinidad') {
+          games = [
+            {
+              id: 'trinidad-play-whe',
+              game: 'Play Whe',
+              numbers: [12], // Traditional Play Whe format - number only for TypeScript compatibility
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'PW-1030-001',
+              draw_time: '10:30',
+              frequency: 'Mon-Sat',
+              draw_times: ['10:30', '13:00', '16:00', '19:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'TTD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 100000) + 20000),
+              // Add custom field for Play Whe symbol representation
+              playWheSymbol: 'Crab'
+            },
+            {
+              id: 'trinidad-pick-2',
+              game: 'Pick 2',
+              numbers: [4, 7],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'P2-1030-001',
+              draw_time: '10:30',
+              frequency: 'Mon-Sat',
+              draw_times: ['10:30', '13:00', '16:00', '19:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'TTD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 25000) + 5000)
+            },
+            {
+              id: 'trinidad-pick-4',
+              game: 'Pick 4',
+              numbers: [8, 1, 5, 3],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'P4-1030-001',
+              draw_time: '10:30',
+              frequency: 'Mon-Sat',
+              draw_times: ['10:30', '13:00', '16:00', '19:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'TTD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 75000) + 15000)
+            },
+            {
+              id: 'trinidad-cash-pot',
+              game: 'Cash Pot',
+              numbers: [7],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'CP-VAR-001',
+              draw_time: 'Variable',
+              frequency: 'Variable',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'TTD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 200000) + 40000)
+            },
+            {
+              id: 'trinidad-win-for-life',
+              game: 'Win for Life / Lotto Plus',
+              numbers: [5, 12, 18, 24, 31, 37],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'WFL-SPEC-001',
+              draw_time: 'Specific days',
+              frequency: 'Specific days',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'TTD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 1000000) + 200000)
+            }
+          ];
+        } else if (island === 'st-lucia') {
+          games = [
+            {
+              id: 'st-lucia-super-6',
+              game: 'Super 6',
+              numbers: [11, 25, 31, 38, 42, 47],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SL-S6-TUE-001',
+              draw_time: 'Tue 13:30',
+              frequency: 'Twice weekly',
+              draw_times: ['Tue 13:30', 'Fri 13:30'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 500000) + 100000)
+            },
+            {
+              id: 'st-lucia-pick-2',
+              game: 'Pick 2',
+              numbers: [6, 9],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SL-P2-0930-001',
+              draw_time: '09:30',
+              frequency: 'Mon-Sat 3 draws/day',
+              draw_times: ['09:30', '13:30', '21:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 25000) + 5000)
+            },
+            {
+              id: 'st-lucia-lucky-3',
+              game: 'Lucky 3',
+              numbers: [2, 7, 4],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SL-L3-0930-001',
+              draw_time: '09:30',
+              frequency: 'Mon-Sat 3 draws/day',
+              draw_times: ['09:30', '13:30', '21:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 30000) + 8000)
+            },
+            {
+              id: 'st-lucia-big-4',
+              game: 'Big 4',
+              numbers: [3, 8, 1, 6],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SL-B4-0930-001',
+              draw_time: '09:30',
+              frequency: 'Mon-Sat 3 draws/day',
+              draw_times: ['09:30', '13:30', '21:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 50000) + 12000)
+            },
+            {
+              id: 'st-lucia-power-play',
+              game: 'Power Play',
+              numbers: [7, 14, 21, 28, 35],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SL-PP-WEEK-001',
+              draw_time: 'Weekly / special draws',
+              frequency: 'Weekly / special draws',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 100000) + 25000)
+            }
+          ];
+        } else if (island === 'barbados') {
+          games = [
+            {
+              id: 'barbados-super-lotto',
+              game: 'Super Lotto',
+              numbers: [9, 18, 27, 33, 41, 45],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BB-SL-EVE-001',
+              draw_time: 'Evening (~21:00)',
+              frequency: 'Twice weekly',
+              draw_times: ['Evening (~21:00)'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BBD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 2000000) + 400000)
+            },
+            {
+              id: 'barbados-mega-6',
+              game: 'Mega 6',
+              numbers: [5, 12, 23, 35, 42, 48],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BB-M6-TUE-001',
+              draw_time: 'Tue ~20:00',
+              frequency: 'Multiple per week',
+              draw_times: ['Tue ~20:00', 'Thu ~20:00', 'Fri ~20:00', 'Sat ~20:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BBD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 1000000) + 200000)
+            },
+            {
+              id: 'barbados-pick-3',
+              game: 'Pick 3',
+              numbers: [7, 2, 9],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BB-P3-1000-001',
+              draw_time: '10:00',
+              frequency: '4 draws/day',
+              draw_times: ['10:00', '13:00', '18:00', '21:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BBD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 25000) + 5000)
+            },
+            {
+              id: 'barbados-pick-4',
+              game: 'Pick 4',
+              numbers: [4, 1, 8, 3],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BB-P4-1000-001',
+              draw_time: '10:00',
+              frequency: '4 draws/day',
+              draw_times: ['10:00', '13:00', '18:00', '21:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BBD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 50000) + 10000)
+            },
+            {
+              id: 'barbados-double-draw',
+              game: 'Double Draw',
+              numbers: [6, 9, 3],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BB-DD-1227-001',
+              draw_time: '12:27',
+              frequency: 'Daily multiple draws',
+              draw_times: ['12:27', '16:45', '18:53', '21:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BBD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 75000) + 15000)
+            }
+          ];
+        } else if (island === 'grenada') {
+          games = [
+            {
+              id: 'grenada-daily-cash-4',
+              game: 'Daily Cash 4',
+              numbers: [7, 3, 9, 2],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GR-DC4-MID-001',
+              draw_time: 'Midday',
+              frequency: 'Mon-Sat 2 draws/day',
+              draw_times: ['Midday', 'Evening'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 25000) + 5000)
+            },
+            {
+              id: 'grenada-daily-pick-3',
+              game: 'Daily Pick 3',
+              numbers: [5, 1, 8],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GR-DP3-MID-001',
+              draw_time: 'Midday',
+              frequency: 'Mon-Sat 2 draws/day',
+              draw_times: ['Midday', 'Evening'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 15000) + 3000)
+            },
+            {
+              id: 'grenada-lotto',
+              game: 'Lotto',
+              numbers: [12, 25, 31, 7, 18, 33],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GR-LOTTO-001',
+              draw_time: 'Scheduled draws',
+              frequency: 'Scheduled draws',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 500000) + 100000)
+            },
+            {
+              id: 'grenada-super-6',
+              game: 'Super 6',
+              numbers: [4, 11, 23, 29, 35, 41],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GR-S6-001',
+              draw_time: 'Twice weekly',
+              frequency: 'Twice weekly',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 300000) + 75000)
+            }
+          ];
+        } else if (island === 'dominica') {
+          games = [
+            {
+              id: 'dominica-play-4',
+              game: 'Play 4',
+              numbers: [6, 2, 8, 1],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'DOM-P4-MORN-001',
+              draw_time: 'Morning',
+              frequency: 'Mon-Sat',
+              draw_times: ['Morning', 'Midday', 'Evening'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 50000) + 10000)
+            },
+            {
+              id: 'dominica-daily-3',
+              game: 'Daily 3',
+              numbers: [4, 7, 3],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'DOM-D3-DAY-001',
+              draw_time: 'Day',
+              frequency: 'Mon-Sat twice/day',
+              draw_times: ['Day', 'Night'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 25000) + 5000)
+            },
+            {
+              id: 'dominica-big-4',
+              game: 'Big 4',
+              numbers: [9, 1, 5, 7],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'DOM-B4-001',
+              draw_time: 'Mon-Sat',
+              frequency: 'Mon-Sat',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 75000) + 15000)
+            },
+            {
+              id: 'dominica-pick-2',
+              game: 'Pick 2',
+              numbers: [3, 8],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'DOM-P2-001',
+              draw_time: 'Mon-Sat',
+              frequency: 'Mon-Sat',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 15000) + 3000)
+            },
+            {
+              id: 'dominica-1-off',
+              game: '1-Off',
+              numbers: [2],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'DOM-1OFF-001',
+              draw_time: 'Varies / specialty',
+              frequency: 'Varies / specialty',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 10000) + 2000)
+            },
+            {
+              id: 'dominica-super-6',
+              game: 'Super 6',
+              numbers: [11, 18, 25, 32, 39, 45],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'DOM-S6-001',
+              draw_time: 'Twice weekly',
+              frequency: 'Twice weekly',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 200000) + 50000)
+            }
+          ];
+        } else if (island === 'antigua') {
+          games = [
+            {
+              id: 'antigua-super-lotto',
+              game: 'Super Lotto',
+              numbers: [5, 12, 19, 26, 33, 41],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'ANT-SL-TUE-001',
+              draw_time: '~21:00',
+              frequency: 'Weekly / Tue & Fri (check local)',
+              draw_times: ['~21:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 1637500) + 500000)
+            },
+            {
+              id: 'antigua-lucky-pick',
+              game: 'Lucky Pick',
+              numbers: [7, 14, 21, 28],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'ANT-LP-EVE-001',
+              draw_time: 'Evening',
+              frequency: 'Daily (evening)',
+              draw_times: ['Evening'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 50000) + 10000)
+            },
+            {
+              id: 'antigua-pick-3',
+              game: 'Pick 3',
+              numbers: [2, 8, 5],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'ANT-P3-001',
+              draw_time: 'Multiple daily draws',
+              frequency: 'Multiple daily draws',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 25000) + 5000)
+            },
+            {
+              id: 'antigua-pick-4',
+              game: 'Pick 4',
+              numbers: [1, 6, 3, 9],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'ANT-P4-001',
+              draw_time: 'Multiple daily draws',
+              frequency: 'Multiple daily draws',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 75000) + 15000)
+            }
+          ];
+        } else if (island === 'guyana') {
+          games = [
+            {
+              id: 'guyana-lotto-supa-6',
+              game: 'Lotto Supa 6',
+              numbers: [8, 15, 22, 29, 36, 42],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GUY-LS6-WED-001',
+              draw_time: 'Wednesday 19:05',
+              frequency: 'Twice weekly',
+              draw_times: ['Wednesday 19:05', 'Saturday 19:05'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'GYD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 5000000) + 1000000)
+            },
+            {
+              id: 'guyana-daily-millions',
+              game: 'Daily Millions',
+              numbers: [3, 17, 24, 31, 38],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GUY-DM-2100-001',
+              draw_time: '21:00',
+              frequency: 'Daily',
+              draw_times: ['21:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'GYD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 2000000) + 500000)
+            },
+            {
+              id: 'guyana-lucky-3',
+              game: 'Lucky 3',
+              numbers: [6, 1, 9],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GUY-L3-1905-001',
+              draw_time: '19:05',
+              frequency: 'Daily',
+              draw_times: ['19:05'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'GYD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 100000) + 20000)
+            },
+            {
+              id: 'guyana-pick-2',
+              game: 'Pick 2',
+              numbers: [4, 7],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GUY-P2-AFT-001',
+              draw_time: 'Afternoon / Evening',
+              frequency: 'Daily',
+              draw_times: ['Afternoon / Evening'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'GYD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 50000) + 10000)
+            },
+            {
+              id: 'guyana-super-pay-day',
+              game: 'Super Pay Day / Pay Day',
+              numbers: [11, 23, 35, 41],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'GUY-SPD-FRI-001',
+              draw_time: 'Fridays / weekly specials',
+              frequency: 'Fridays / weekly specials',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'GYD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 1000000) + 200000)
+            }
+          ];
+        } else if (island === 'belize') {
+          games = [
+            {
+              id: 'belize-boledo',
+              game: 'Boledo',
+              numbers: [7, 14, 21],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BZ-BOL-2110-001',
+              draw_time: '21:10',
+              frequency: 'Daily',
+              draw_times: ['21:10'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BZD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 25000) + 5000)
+            },
+            {
+              id: 'belize-pick-3',
+              game: 'Pick 3',
+              numbers: [2, 8, 5],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BZ-P3-2000-001',
+              draw_time: '20:00',
+              frequency: 'Daily',
+              draw_times: ['20:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BZD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 15000) + 3000)
+            },
+            {
+              id: 'belize-fantasy-5',
+              game: 'Fantasy 5',
+              numbers: [9, 16, 23, 31, 38],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BZ-F5-TUE-001',
+              draw_time: '20:00',
+              frequency: 'Tue, Thu, Sat',
+              draw_times: ['20:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BZD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 100000) + 20000)
+            },
+            {
+              id: 'belize-sunday-lottery',
+              game: 'Sunday Lottery',
+              numbers: [4, 12, 19, 27, 34, 41],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'BZ-SL-SUN-001',
+              draw_time: 'Sunday 12:00',
+              frequency: 'Weekly',
+              draw_times: ['Sunday 12:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'BZD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 200000) + 50000)
+            }
+          ];
+        } else if (island === 'st-kitts') {
+          games = [
+            {
+              id: 'st-kitts-super-lotto',
+              game: 'Super Lotto',
+              numbers: [6, 13, 20, 27, 34, 41],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SK-SL-TUE-001',
+              draw_time: 'Tuesday 20:00',
+              frequency: 'Twice weekly',
+              draw_times: ['Tuesday 20:00', 'Friday 20:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 500000) + 100000)
+            },
+            {
+              id: 'st-kitts-lucky-pick',
+              game: 'Lucky Pick',
+              numbers: [8, 15, 22, 29],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SK-LP-2000-001',
+              draw_time: '20:00',
+              frequency: 'Daily (evening)',
+              draw_times: ['20:00'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 50000) + 10000)
+            },
+            {
+              id: 'st-kitts-pick-3',
+              game: 'Pick 3',
+              numbers: [3, 7, 1],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SK-P3-MORN-001',
+              draw_time: 'Morning',
+              frequency: 'Multiple draws/day',
+              draw_times: ['Morning', 'Evening'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 25000) + 5000)
+            },
+            {
+              id: 'st-kitts-pick-4',
+              game: 'Pick 4',
+              numbers: [5, 2, 9, 6],
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: 'SK-P4-MORN-001',
+              draw_time: 'Morning',
+              frequency: 'Multiple draws/day',
+              draw_times: ['Morning', 'Evening'],
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XCD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 75000) + 15000)
+            }
+          ];
+        } else {
+          // Final fallback for any unhandled islands
+          games = [
+            {
+              id: `${island}-default-lotto`,
+              game: 'Lotto',
+              numbers: Array.from({ length: 6 }, () => Math.floor(Math.random() * 40) + 1),
+              draw_date: new Date().toISOString().split('T')[0],
+              draw_number: `${island.toUpperCase()}-DEFAULT-001`,
+              draw_time: 'Weekly',
+              frequency: 'Weekly',
+              drawDateFormatted: new Date().toLocaleDateString(),
+              jackpotFormatted: new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0
+              }).format(Math.floor(Math.random() * 100000) + 20000)
+            }
+          ];
+        }
       }
 
       mockData[island] = {

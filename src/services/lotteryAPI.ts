@@ -25,6 +25,9 @@ interface FormattedLotteryGame extends LotteryGame {
   id: string;
   drawDateFormatted?: string | null;
   jackpotFormatted?: string | null;
+  frequency?: string;
+  draw_times?: string[];
+  playWheSymbol?: string; // For Trinidad Play Whe symbol representation
 }
 
 interface FormattedIslandData {
